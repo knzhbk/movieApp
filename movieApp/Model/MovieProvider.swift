@@ -9,8 +9,7 @@
 import Foundation
 
 class MovieProvider {
-    let apiKey = "7846191498003a62d2789be2acc64e91";
-    
+
     func start() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(onRequestMoviesList),
@@ -50,12 +49,19 @@ class MovieProvider {
     }
     
     func getMoviesListUrl(page: Int = 1) -> String {
-        return "https://api.themoviedb.org/3/movie/upcoming?api_key=\(apiKey)&page=\(page)"
+        let baseApiUrl = "https://api.themoviedb.org/3/movie/upcoming"
+        let apiKey = "7846191498003a62d2789be2acc64e91"
+        return "\(baseApiUrl)?api_key=\(apiKey)&page=\(page)"
     }
     
     func sendMovies(page: Int, movies: [Movie]) {
         let response = ResponseMoviesListNotification(page: page, movies: movies)
         NotificationCenter.default.post(name: .responseMoviesListNotification, object: response)
+    }
+    
+    static func getMoviePosterUrl(posterUrl: String) -> String {
+        let baseImageUrl = "https://image.tmdb.org/t/p/w500"
+        return "\(baseImageUrl)\(posterUrl)"
     }
 }
 

@@ -18,8 +18,6 @@ class MovieDetailViewController: UIViewController {
     
     var movie: Movie?
     var genre = 0
-    lazy var imageUrl = "https://image.tmdb.org/t/p/w1280/\(movie!.poster_path)"
-    lazy var genreUrl = "https://www.themoviedb.org/genre/\(genre)"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +27,12 @@ class MovieDetailViewController: UIViewController {
             detailMovieDate.text = movie.release_date
             movieDescription.text = movie.overview
             detailMovieRating.text = "Rating: \(movie.vote_average)"
-            detailImage.sd_setImage(with: URL(string:imageUrl), placeholderImage:nil)
             self.title = movie.title
+            
+            if movie.poster_path != nil {
+                let moviePosterUrl = MovieProvider.getMoviePosterUrl(posterUrl: movie.poster_path!)
+                detailImage.sd_setImage(with: URL(string:moviePosterUrl), placeholderImage:nil)
+            }
             //getting genre
             for item in movie.genre_ids {
                 genre = item

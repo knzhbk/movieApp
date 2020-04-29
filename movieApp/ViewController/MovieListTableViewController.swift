@@ -10,10 +10,8 @@ import UIKit
 import SDWebImage
 
 class MovieListTableViewController: UITableViewController {
-    
     var moviesList: [Movie] = []
     var movieProvider: MovieProvider?
-    let imageAdress = "https://image.tmdb.org/t/p/w1280/"
     var page: Int = 1
     
     required init?(coder: NSCoder) {
@@ -26,7 +24,7 @@ class MovieListTableViewController: UITableViewController {
         
         self.title = "Movies"
     }
-
+    
     @objc func onResponseMoviesList(notification: Notification) {
         let response = notification.object as! ResponseMoviesListNotification
         page = response.page
@@ -69,8 +67,9 @@ class MovieListTableViewController: UITableViewController {
         cell.movieTitle.text = movie.title
         cell.movieDate.text = movie.release_date
         if movie.poster_path != nil {
-            let imageUrl = "\(imageAdress)\(movie.poster_path!)"
-            cell.movieImage.sd_setImage(with: URL(string:imageUrl), placeholderImage:nil)
+            let moviePosterUrl = MovieProvider.getMoviePosterUrl(posterUrl: movie.poster_path!)
+            print(moviePosterUrl)
+            cell.movieImage.sd_setImage(with: URL(string:moviePosterUrl), placeholderImage:nil)
         }
         
         return cell

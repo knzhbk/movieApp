@@ -26,7 +26,7 @@ class MovieListTableViewController: UITableViewController {
         
         self.title = "Movies"
     }
-    
+
     @objc func onResponseMoviesList(notification: Notification) {
         let response = notification.object as! ResponseMoviesListNotification
         page = response.page
@@ -37,6 +37,12 @@ class MovieListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getMovies(page: page)
+    }
+    
+    @IBAction func refresh(_ sender: UIRefreshControl) {
+        getMovies(page: 1)
+        self.refreshControl?.endRefreshing()
+        tableView.reloadData()
     }
     
     func getMovies(page: Int = 1) {
